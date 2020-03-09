@@ -1,0 +1,27 @@
+.pointer {
+    cursor: pointer;
+}
+
+.react-datepicker-wrapper {
+    width: 100%;
+}
+
+.custom_input_2.error {
+    border-bottom-color: red !important;
+}
+
+.custom_input_2 {
+    background-color:transparent;
+    border:0;
+    border-radius: 0;
+    border-bottom-color: #fff;
+    border-bottom-style: solid;
+    border-bottom-width: 0.5px;
+    color:#fff;
+    width: 100%;
+}
+
+select option {
+    background-color: #fff !important;
+    color: #000 !important; 
+}

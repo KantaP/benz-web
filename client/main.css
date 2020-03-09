@@ -1,0 +1,9 @@
+@font-face {
+  font-family: 'Corporate-A-Regular';
+  src: url('/fonts/Corporate-A-Regular.otf');
+}
+
+body {
+  font-family: 'Corporate-A-Regular';
+  padding: 0;
+}

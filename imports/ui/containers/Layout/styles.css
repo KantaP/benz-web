@@ -1,0 +1,29 @@
+@font-face {
+    font-family: 'Corporate-A-Regular';
+    src: url('/fonts/Corporate-A-Regular.otf');
+}
+
+
+
+body {
+    font-family: 'Corporate-A-Regular';
+    padding: 0;
+}
+
+.custom_input {
+    background-color: #ccc !important;
+    color: #000 !important;
+}
+
+
+.custom_input::placeholder {
+    color:#000 !important;
+}
+
+.rt-noData { 
+    z-index: 0 !important;
+}
+
+.ReactTable .rt-th, .ReactTable .rt-td {
+    overflow: visible !important;
+}

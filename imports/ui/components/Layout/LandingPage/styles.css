@@ -1,0 +1,25 @@
+
+
+label {
+    color: #ffffff !important;
+}
+
+.form-control::placeholder {
+    color: #ffffff;
+}
+
+.form-control:focus {
+    box-shadow: none;
+}
+
+.form-input-custom {
+    background-color:'transparent';
+    border:'0px';
+    border-radius: 0;
+    border-bottom:'1px solid #fff';
+}
+
+.row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
