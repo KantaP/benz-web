@@ -280,7 +280,10 @@ export class RegisterForm extends React.Component {
                 showrooms,
                 changwats,
                 amphoes,
-                birthDatePicker,
+                birthDatePicker, 
+                selectDay,
+                selectMonth,
+                selectYear,
                 ...userItem 
             } = this.state;
 
@@ -290,13 +293,14 @@ export class RegisterForm extends React.Component {
                 }
                 userItem.amgModel = 'other_' + amgModelOther;
             }
-
+            const birthDate = moment(`${this.state.selectYear}-${this.state.selectMonth}-${this.state.selectDay}`, 'YYYY-MMMM-DD').format('YYYY-MM-DD');
+            
             const user = await signup({
                 email: userItem.email,
                 name: userItem.firstName,
                 family_name: userItem.lastName,
                 password: password,
-                birthdate: userItem.birthDate
+                birthdate: birthDate
             });
             // console.log('add cognito user' , user);
             if(user) {
@@ -341,6 +345,9 @@ export class RegisterForm extends React.Component {
         let nameValidator = (this.state.submit && !this.state.firstName) ? true : false;
         let lastnameValidator = (this.state.submit && !this.state.lastName) ? true : false;
         let birthDateValidator = (this.state.submit && !this.state.birthDate) ? true : false;
+        let selectDayValidator = (this.state.submit && !this.state.selectDay) ? true : false;
+        let selectMonthValidator = (this.state.submit && !this.state.selectMonth) ? true : false;
+        let selectYearValidator = (this.state.submit && !this.state.selectYear) ? true : false;
         let emailValidator = (this.state.submit && !this.state.email) ? true : false;
         let passwordValidator = (this.state.submit && !this.state.password) ? true : false;
         let confirmPasswordValidator = (this.state.submit && !this.state.confirmPassword) ? true : false;
@@ -352,6 +359,57 @@ export class RegisterForm extends React.Component {
             !this.state.amgModelOther && 
             this.state.amgModel === 'other'
         ) ? true : false
+
+        const sortByMonthName = (monthNames, isReverse = false) => {
+            const referenceMonthNames = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+            const directionFactor = isReverse ? -1 : 1;
+            const comparator = (a, b) => {
+              if (!a && !b) return 0;
+              if (!a && b) return -1 * directionFactor;
+              if (a && !b) return 1 * directionFactor;
+          
+              const comparableA = a.toLowerCase().substring(0, 3);
+              const comparableB = b.toLowerCase().substring(0, 3);
+              const comparisonResult = referenceMonthNames.indexOf(comparableA) - referenceMonthNames.indexOf(comparableB);
+              return comparisonResult * directionFactor;
+            };
+            const safeCopyMonthNames = [...monthNames];
+            safeCopyMonthNames.sort(comparator);
+            return safeCopyMonthNames;
+          }
+
+        const YEARS = () => {
+            const years = []
+            const dateStart = moment()
+            const dateEnd = moment().subtract(90, 'y')
+            while (dateStart.diff(dateEnd, 'years') >= 0) {
+              years.push(dateStart.format('YYYY'))
+              dateStart.subtract(1, 'year')
+            }
+            return years
+        }
+        const MONTHS = () => {
+            const months = []
+            const dateStart = moment()
+            const dateEnd = moment().add(12, 'month')
+            while (dateEnd.diff(dateStart, 'months') >= 0) {
+                months.push(dateStart.format('MMMM'))
+                dateStart.add(1, 'month')
+            }
+            return sortByMonthName(months)
+        }
+        const DAYS = () => {
+            const days = []
+            const dateStart = moment()
+            const dateEnd = moment().add(30, 'days')
+            while (dateEnd.diff(dateStart, 'days') >= 0) {
+                days.push(dateStart.format('DD'))
+                dateStart.add(1, 'days')
+            }
+            return days.sort()
+        }
+        
+           
         return (
             <LoadingOverlay
                 active={this.state.loading}
@@ -471,7 +529,7 @@ export class RegisterForm extends React.Component {
                     <Col xs="12" md="6" lg="6" sm="12">
                         <FormGroup>
                             
-                            <DatePicker
+                            {/* <DatePicker
                                 placeholderText="BIRTH DATE *"
                                 selected={this.state.birthDatePicker}
                                 showMonthDropdown
@@ -484,7 +542,55 @@ export class RegisterForm extends React.Component {
                                         birthDatePicker: date
                                     });
                                 }}
-                            />
+                            /> */}
+                            <label>Birth Date *</label>
+                            <Row>
+                                <Input type="select" 
+                                style={{...{width: 100} , ...styles.customInput(selectDayValidator)}} 
+                                name="selectDay" 
+                                id="selectDay"
+                                onChange={(e)=>{
+                                    this.setState({selectDay: e.target.value});
+                                }}
+                                >
+                                    {
+                                       DAYS().map((item)=>(
+                                        <option value={item}>{item}</option>
+                                       ))
+                                    }
+                                </Input>
+                                <Input 
+                                type="select" 
+                                style={{...{width: 100} , ...styles.customInput(selectMonthValidator)}} 
+                                name="selectMonth" 
+                                id="selectDay"
+                                onChange={(e)=>{
+                                    this.setState({selectMonth: e.target.value});
+                                }}
+                                >
+                                    {
+                                       MONTHS().map((item)=>(
+                                        <option value={item}>{item}</option>
+                                       ))
+                                    }
+                                </Input>
+                                <Input 
+                                type="select" 
+                                style={{...{width: 100} , ...styles.customInput(selectYearValidator)}} 
+                                name="selectYear" 
+                                id="selectDay"
+                                onChange={(e)=>{
+                                    this.setState({selectYear: e.target.value});
+                                }}
+                                >
+                                   {
+                                       YEARS().map((item)=>(
+                                        <option value={item}>{item}</option>
+                                       ))
+                                   }
+                                </Input>
+                            </Row>
+                            
                         </FormGroup>
                     </Col>
                     <Col xs="12" md="6" lg="6" sm="12">
