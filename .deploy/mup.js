@@ -37,9 +37,9 @@ module.exports = {
 
     auth: {
       // IAM user's Access key ID
-      id: 'AKIATPT3KBUTFHLOQ6HF',
+      id: 'AKIATPT3KBUTO6OQBXRL',
       // IAM user's Secret access key
-      secret: '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'
+      secret: 'Oj+BIQKwTm5wE6HBSSEXiUjeiKqG3VpUaSENPIfE'
     },
 
     // (optional, default is t2.micro) Type of instance to use
