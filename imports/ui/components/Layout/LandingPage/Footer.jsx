@@ -12,7 +12,7 @@ export const Footer = () => (
         padding: 10
     }}>
         <p style={{color:'#fff' , fontSize: '10px'}}>
-            &copy; 2019 Mercedes-Benz (Thailand) Limited. All rights reversed (provider)
+            &copy; 2020 Mercedes-Benz (Thailand) Limited. All rights reversed (provider)
         </p>
     </Row>
 )

@@ -17,8 +17,10 @@ import LoadingOverlay from 'react-loading-overlay';
 import { CSVLink } from "react-csv";
 import _ from 'lodash';
 import moment from 'moment-timezone';
-
+import UserRow from '../../UserRow';
 import { GoogleMap, Marker } from '@react-google-maps/api'
+import { DateTimePicker } from 'react-widgets'
+import DatePicker from 'reactstrap-date-picker';
 const customStyles = {
     content : {
       top                   : '50%',
@@ -396,6 +398,38 @@ export const EventScreen = (
                                 </Col>
                             </FormGroup>
                         </Form>
+                    </div>
+                )
+            }
+            {
+                (state.modalMode === 'quota') &&
+                (
+                    <div>
+                        <Row style={{
+                            borderBottomWidth: 1, 
+                            borderBottomColor:'#ccc',
+                            borderBottomStyle:'solid',
+                            paddingBottom: 10,
+                            justifyContent:'space-between',
+                            paddingRight: 10
+                        }}>
+                            <div>Event Quota</div>
+                            <Button 
+                                size="small"
+                                style={{
+                                    border: 0,
+                                    backgroundColor:'#fff'
+                                }}
+                                onClick={onCloseModal}>
+                                    <i style={{color:'#000'}} className="fas fa-times"></i>
+                                </Button>
+                        </Row>
+                        {
+                            (state.eventJoineds.length > 0) &&
+                            state.eventJoineds.map((item)=>(
+                                <UserRow userId={item.userId} />
+                            ))
+                        }
                     </div>
                 )
             }

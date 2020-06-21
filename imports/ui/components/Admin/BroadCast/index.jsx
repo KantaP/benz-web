@@ -18,7 +18,10 @@ import { CSVLink } from "react-csv";
 import _ from 'lodash';
 import { GoogleMap, Marker } from '@react-google-maps/api'
 import Files from 'react-files'
+import DatePicker from 'reactstrap-date-picker';
 
+import { DateTimePicker } from 'react-widgets'
+import moment from 'moment-timezone';
 const customStyles = {
     content : {
       top                   : '50%',
@@ -208,12 +211,32 @@ export const BroadCastScreen = (
                                     <FormGroup key={3} row>
                                         <Label className="customLabel" sm={3}>Privilege Expire *</Label>
                                         <Col sm={9}>
-                                            <Input value={state.expireRedeemAt} 
+                                            {/* <DateTimePicker 
+                                                defaultValue={new Date()}
+                                                time={false}
+                                                format={'DD MMM YYYY'}
+                                                onChange={(v) => {
+                                                    onHandleChange('expireRedeemAt' , moment.tz(v, 'Asia/Bangkok').format('YYYY-MM-DD'))
+                                                }}
+                                                containerClassName="customInput"
+                                            /> */}
+                                            <DatePicker 
+                                                value={state.expireRedeemAt} 
+                                                onChange={(v,f) => {
+                                                    console.log( moment.tz(v, 'Asia/Bangkok').format('YYYY-MM-DD'))
+                                                    onHandleChange('expireRedeemAt' , moment.tz(v, 'Asia/Bangkok').format('YYYY-MM-DD'))
+                                                }} 
+                                                className="customInput" 
+                                                name="expireRedeemAt" 
+                                                id="expireRedeemAt" 
+                                                showClearButton={false}
+                                            />
+                                            {/* <Input value={state.expireRedeemAt} 
                                             onChange={(e) => {
                                                 console.log(e.target.value)
                                                 onHandleChange('expireRedeemAt' , e.target.value)
                                             }} 
-                                            className="customInput" type="date" name="expireRedeemAt" id="expireRedeemAt" />
+                                            className="customInput" type="date" name="expireRedeemAt" id="expireRedeemAt" /> */}
                                         </Col>
                                     </FormGroup>
                                 ]
@@ -295,20 +318,19 @@ export const BroadCastScreen = (
                                     className="customInput" type="textarea" name="description" id="description" />
                                 </Col>
                             </FormGroup>
-                            <FormGroup row>
+                            {/* <FormGroup row>
                                 <Label className="customLabel" sm={3}>Location</Label>
                                 <Col sm={9}>
-                                    {/* <Input className="customInput" type="FormText" name="location" id="location" /> */}
                                     <LocationSearchInput
                                         initialValue={state.address}
                                         onHandleChange={onHandleChange}
                                     />
                                 </Col>
-                            </FormGroup>
-                            <FormGroup row>
+                            </FormGroup> */}
+                            {/* <FormGroup row>
                                 <Label className="customLabel" sm={3}></Label>
                                 <Col sm={9}>
-                                    {/* <Input className="customInput" type="FormText" name="location" id="location" /> */}
+                                   
                                     <GoogleMap
                                         zoom={7}
                                         id='mapview'
@@ -319,7 +341,7 @@ export const BroadCastScreen = (
                                         />
                                     </GoogleMap>
                                 </Col>
-                            </FormGroup>
+                            </FormGroup> */}
                             <FormGroup row>
                                 <Label className="customLabel" sm={3}>Pin Post</Label>
                                 <Col sm={9}>
@@ -506,16 +528,16 @@ export const BroadCastScreen = (
                                     {state.description}
                                 </Col>
                             </FormGroup>
-                            <FormGroup row style={{alignItems:'center'}}>
+                            {/* <FormGroup row style={{alignItems:'center'}}>
                                 <Label className="customLabel" sm={3}>Location</Label>
                                 <Col sm={9}>
                                     {state.address}
                                 </Col>
-                            </FormGroup>
-                            <FormGroup row>
+                            </FormGroup> */}
+                            {/* <FormGroup row>
                                 <Label className="customLabel" sm={3}></Label>
                                 <Col sm={9}>
-                                    {/* <Input className="customInput" type="FormText" name="location" id="location" /> */}
+                                    
                                     <GoogleMap
                                         zoom={7}
                                         id='mapview'
@@ -526,7 +548,7 @@ export const BroadCastScreen = (
                                         />
                                     </GoogleMap>
                                 </Col>
-                            </FormGroup>
+                            </FormGroup> */}
                             <FormGroup row style={{alignItems:'center'}}>
                                 <Label className="customLabel" sm={3}>Pin Post</Label>
                                 <Col sm={9}>

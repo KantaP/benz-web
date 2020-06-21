@@ -26,24 +26,30 @@ export class CustomSignIn extends SignIn {
     }
 
     customSignIn = async() => {
-        await this.setState({submit: true});
-        if(!this.state.username) {
-            await this.setState({error:'Username cannot empty.'});
-            return;
+        try {
+            await this.setState({submit: true});
+            if(!this.state.username) {
+                await this.setState({error:'Username cannot empty.'});
+                return;
+            }
+            if(!this.state.password) {
+                await this.setState({error:'Password cannot empty.'});
+                return;
+            }
+            await this.setState({loading: true});
+            let user = await signIn(this.state);
+            if(!user.signInUserSession.idToken.payload['cognito:groups'].includes('Admins')) {
+                await this.setState({error:'This session for admin only.' , loading: false});
+                await signout();
+                return;
+            }
+            window.location.reload()
+        }catch(error) {
+            window.location.reload()
         }
-        if(!this.state.password) {
-            await this.setState({error:'Password cannot empty.'});
-            return;
-        }
-        await this.setState({loading: true});
-        let user = await signIn(this.state);
-        if(!user.signInUserSession.idToken.payload['cognito:groups'].includes('Admins')) {
-            await this.setState({error:'This session for admin only.' , loading: false});
-            await signout();
-            return;
-        }
+        
         // console.log('user logged' , user);
-        window.location.reload()
+        
     }
 
     showComponent(theme) {
@@ -61,17 +67,18 @@ export class CustomSignIn extends SignIn {
                     />
                     </Row>
                     <Row>
-                        <Col xs="2" md="3" sm="2"></Col>
-                        <Col xs="8" md="6" sm="8" style={{
+                        <Col xs="0" md="3" className="hidden-sm hidden-xs"></Col>
+                        <Col xs="12" md="6" sm="12" style={{
                             minHeight: '320px',
-                            backgroundColor:'#fff'
+                            backgroundColor:'#fff',
+                            padding: '10px'
                         }}>
                             <Row style={{
                                 justifyContent:'center', 
                                 flexWrap:'wrap' , 
                                 marginTop: 20 , 
-                                paddingLeft: '6rem' , 
-                                paddingRight: '6rem',
+                                // paddingLeft: '6rem' , 
+                                // paddingRight: '6rem',
                                 textAlign:'center'
                             }}>
                                 <p style={{fontSize:'16px',fontWeight:'bold'}}>Log in with your email address and password</p>
@@ -127,7 +134,7 @@ export class CustomSignIn extends SignIn {
                                 )
                             }
                         </Col>
-                        <Col xs="2" md="3" sm="2"></Col>
+                        <Col xs="0" md="3" className="hidden-sm hidden-xs"></Col>
                     </Row>
                 </div>
             </LoadingOverlay>

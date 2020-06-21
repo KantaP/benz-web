@@ -64,8 +64,8 @@ export class CustomSignInUser extends SignIn {
                     />
                     </Row>
                     <Row>
-                        <Col xs="2" md="3" sm="2"></Col>
-                        <Col xs="8" md="6" sm="8" style={{
+                        <Col xs="2" md="3" sm="1"></Col>
+                        <Col xs="8" md="6" sm="10" style={{
                             minHeight: '320px',
                             backgroundColor:'#fff'
                         }}>
@@ -130,7 +130,7 @@ export class CustomSignInUser extends SignIn {
                                 )
                             }
                         </Col>
-                        <Col xs="2" md="3" sm="2"></Col>
+                        <Col xs="2" md="3" sm="1"></Col>
                     </Row>
                 </div>
             </LoadingOverlay>

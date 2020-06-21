@@ -1,6 +1,6 @@
 import React from 'react';
 import { EventScreen } from '../../components/Admin/Event';
-import { listEvents , getEvent  } from '../../graphql/queries';
+import { listEvents , getEvent , getUserJoinedEvent  } from '../../graphql/queries';
 import { createEvent , updateEvent , deleteEvent } from '../../graphql/mutations';
 import { API , graphqlOperation , Auth , Storage } from 'aws-amplify';
 import moment from 'moment-timezone';
@@ -36,7 +36,8 @@ export class EventContainer extends React.Component {
         dataToDownload: [],
         // search
         search: '',
-        searchIn: 'title'
+        searchIn: 'title' ,
+        eventJoineds: []
     }
 
     
@@ -109,7 +110,7 @@ export class EventContainer extends React.Component {
                     Cell: row => {
                         let value = (!row.value) ? 'Unlimited' : row.value;
                         return (
-                            <a href="#">
+                            <a href="#" onClick={()=>this.onShowQuota(row)}>
                                 {value}
                             </a>
                         )
@@ -310,8 +311,44 @@ export class EventContainer extends React.Component {
         }
     }
 
-    onShowQuota = () => {
-        
+    onShowQuota = async(rowData) => {
+        // console.log(rowData);
+        try {
+            let result = await API.graphql(graphqlOperation(getEvent, {id: rowData.original.id}));
+            let address = (result.data.getEvent.location && result.data.getEvent.location !== null) 
+                            ? result.data.getEvent.location.placeName
+                            : '';
+            let latlng = (result.data.getEvent.location && result.data.getEvent.location !== null) 
+            ? {
+                lat: parseFloat(result.data.getEvent.location.placeLatLng.split(',')[0]), 
+                lng: parseFloat(result.data.getEvent.location.placeLatLng.split(',')[1])
+            }
+            : {lat: 13.75398,  lng: 100.50144}
+
+            let startDateTime = moment(result.data.getEvent.startTime);
+            let endDateTime = moment(result.data.getEvent.endTime);
+            await this.setState({
+                address: address,
+                latlng: latlng,
+                title: result.data.getEvent.title,
+                description: result.data.getEvent.description,
+                photoUrl: result.data.getEvent.image,
+                photo: null ,
+                quota: result.data.getEvent.quota,
+                modalIsOpen: true,
+                modalMode: 'quota',
+                start_date: startDateTime.format('YYYY-MM-DD'),
+                start_time: startDateTime.format('HH:mm'),
+                end_date: endDateTime.format('YYYY-MM-DD'),
+                end_time: endDateTime.format('HH:mm'),
+                id: rowData.original.id ,
+                eventJoineds: result.data.getEvent.eventJoineds.items
+            }, () => {
+                console.log(this.state)
+            })
+        }catch(error) {
+            console.log(error);
+        }
     }
 
     onView = async(id) => {

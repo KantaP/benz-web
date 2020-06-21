@@ -37,7 +37,7 @@ export const signout = () => {
     return Auth.signOut();
 }
 
-export const signup = async({email , password , birthdate , name , family_name }) => {
+export const signup = async({email , password , birthdate = '1970-01-01' , name , family_name }) => {
     try {
         const user = await Auth.signUp({
             username: email,
@@ -52,7 +52,7 @@ export const signup = async({email , password , birthdate , name , family_name }
         return user;
     }catch(err) {
         // alert(err.code);
-        return false;
+        return err.code;
     }
 }
 

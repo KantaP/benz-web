@@ -376,6 +376,7 @@ export class BroadCastContainer extends React.Component {
                     return false;
                 }
             }
+            console.log(variable)
             let result = await API.graphql(graphqlOperation(createPost,{input:newVariable}));
             // console.log(result);
             // if(this.state.photo) {
@@ -401,7 +402,7 @@ export class BroadCastContainer extends React.Component {
         }catch(error) {
             console.log(error);
             await this.setState({loading: false});
-            alert(error.message);
+            alert(error.message || 'Something went wrong');
         }
     }
 
